@@ -1,7 +1,12 @@
 {
   "name": "nestjs-cerberos",
   "version": "1.0.0",
-  "main": "index.js",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ribeiro/nestjs-cerberos.git"
+  },
   "scripts": {
     "build": "tsc",
     "test": "jest",
@@ -9,10 +14,17 @@
     "test:coverage": "jest --coverage",
     "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "keywords": [
+    "nestjs",
+    "auth",
+    "jwt",
+    "guard",
+    "decorator",
+    "nestjs-cerberos"
+  ],
+  "author": "Geovanny Ribeiro",
+  "license": "MIT",
+  "description": "NestJS AuthGuard with JWT support and @Public() decorator",
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",
