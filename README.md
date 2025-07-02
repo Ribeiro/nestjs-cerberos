@@ -105,13 +105,6 @@ nestjs-cerberos/
 ├── tsconfig.json
 ```
 
-### Features
-✔️ Support for JWT
-✔️ Injection of custom LoggerService
-✔️ @Public() decorator to bypass authentication
-✔️ Payload typing via JwtPayload
-✔️ Tests with 100% coverage
-
 
 ## 🔐 License
 
