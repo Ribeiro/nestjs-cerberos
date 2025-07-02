@@ -20,21 +20,62 @@ yarn add nestjs-cerberos
 
 ## 🛠️ Usage
 
-### 1. Import and use the `AuthGuard`
+### Register JWT module and logger:
 
 ```ts
+import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from 'nestjs-cerberos';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot(),
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1h' },
+    }),
+  ],
+  providers: [
+    {
+      provide: 'LoggerService',
+      useClass: SeuLoggerCustomizado, // ou console se preferir
+    },
+    AuthGuard,
+  ],
+  exports: [AuthGuard],
+})
+export class AuthModule {}
 ```
 
-### 2. Register it in your controller
+### Protect routes using AuthGuard:
 
 ```ts
+import { Controller, Get, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'nestjs-cerberos';
+
+@Controller('secure')
 @UseGuards(AuthGuard)
-@Controller('example')
-export class ExampleController {
+export class SecureController {
   @Get()
-  getData() {
-    return { message: 'Protected data' };
+  getSecureData() {
+    return { data: 'access granted' };
+  }
+}
+```
+
+### Release routes using @Public():
+
+```ts
+import { Controller, Get } from '@nestjs/common';
+import { Public } from 'nestjs-cerberos';
+
+@Controller('status')
+export class StatusController {
+  @Public()
+  @Get()
+  healthCheck() {
+    return { status: 'ok' };
   }
 }
 ```
@@ -44,6 +85,33 @@ export class ExampleController {
 ```bash
 npm test
 ```
+
+### Project Structure
+
+```bash
+nestjs-cerberos/
+├── decorators/
+│   └── public.decorator.ts
+├── dto/
+│   └── unauthorized-response.dto.ts
+├── guards/
+│   └── auth.guard.ts
+├── test/
+│   └── auth.guard.spec.ts
+├── .gitignore
+├── jest.config.js
+├── package.json
+├── README.md
+├── tsconfig.json
+```
+
+### Features
+✔️ Support for JWT
+✔️ Injection of custom LoggerService
+✔️ @Public() decorator to bypass authentication
+✔️ Payload typing via JwtPayload
+✔️ Tests with 100% coverage
+
 
 ## 🔐 License
 
